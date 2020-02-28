@@ -20,7 +20,7 @@ import java.util.List;
 public class CoronaVirusDataService {
     public static String VIRUS_DATA_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv";
 
-    private List<LocationStats> allStats = new ArrayList<>();
+    List<LocationStats> allStats = new ArrayList<>();
 
     // Post construct so that Spring can know to run this function when instance of this service class is created
     @PostConstruct
@@ -34,7 +34,6 @@ public class CoronaVirusDataService {
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(VIRUS_DATA_URL)).build();
         // Http Response
         HttpResponse<String> httpResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(httpResponse.body());
         //  StringReader for reading  String
         StringReader csvReader = new StringReader(httpResponse.body());
         // Commons CSV Open Source library for parsing csv file in raw format and taking values out of it
