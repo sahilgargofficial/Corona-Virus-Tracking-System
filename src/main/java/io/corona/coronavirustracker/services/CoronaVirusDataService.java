@@ -22,6 +22,10 @@ public class CoronaVirusDataService {
 
     List<LocationStats> allStats = new ArrayList<>();
 
+    public List<LocationStats> getAllStats() {
+        return allStats;
+    }
+
     // Post construct so that Spring can know to run this function when instance of this service class is created
     @PostConstruct
     // Scheduled to run daily so that records can be updated ...
@@ -43,7 +47,10 @@ public class CoronaVirusDataService {
             LocationStats locationStats = new LocationStats();
             locationStats.setState(record.get("Province/State"));
             locationStats.setCountry(record.get("Country/Region"));
-            locationStats.setLatestTotalCases(Integer.parseInt(record.get(record.size() - 1)));
+            int latestCases = Integer.parseInt(record.get(record.size() - 1));
+            int prevDayCases = Integer.parseInt(record.get(record.size() - 2));
+            locationStats.setLatestTotalCases(latestCases);
+            locationStats.setDiffFromPrevDay(latestCases - prevDayCases);
             newStats.add(locationStats);
         }
         this.allStats = newStats;
